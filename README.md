@@ -1,0 +1,1 @@
+# hsps-doppelkopf-client
