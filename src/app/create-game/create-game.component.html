@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Spiel erstellen</h1>
+<div class="container" mat-dialog-content>
+  <form class="game-form" #gameForm="ngForm">
+    <mat-form-field>
+      <input matInput name="gameName" placeholder="Name des Spiels" [(value)]="newGame.gameName">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="playerName" placeholder="Spielername" [(value)]="newGame.playerName">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="rounds" placeholder="Runden" type="number" [(value)]="newGame.rounds">
+    </mat-form-field>
+    <h4>Regeln</h4>
+    <section class="rules">
+      <mat-checkbox class="example-margin" name="armut" [(ngModel)]="newGame.rules.armut">Armut</mat-checkbox>
+      <mat-checkbox class="example-margin" name="schweinchen" [(ngModel)]="newGame.rules.schweinchen">Schweinchen</mat-checkbox>
+      <mat-checkbox class="example-margin" name="zweiteDulle" [(ngModel)]="newGame.rules.zweiteDulle">zweite Dulle sticht erste</mat-checkbox>
+      <mat-checkbox class="example-margin" name="schmeissen" [(ngModel)]="newGame.rules.schmeissen">Schmeißen</mat-checkbox>
+      <mat-checkbox class="example-margin" name="koenigsSolo" [(ngModel)]="newGame.rules.koenigsSolo">Königssolo</mat-checkbox>
+      <mat-checkbox class="example-margin" name="pflichtAnsage" [(ngModel)]="newGame.rules.pflichtAnsage">Pflichtansage bei 30 Punkten im ersten Stich</mat-checkbox>
+    </section>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button (click)="create()" cdkFocusInitial>Erstellen</button>
+</div>

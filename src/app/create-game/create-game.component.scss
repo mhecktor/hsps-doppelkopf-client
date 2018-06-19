@@ -1,0 +1,22 @@
+.container {
+	max-width: 100%;
+	max-height: 100%;
+	overflow: hidden;
+}
+
+.game-form {
+	display: flex;
+	flex-direction: column;
+	.rules {
+		display: flex;
+		flex-flow: row wrap;
+		* {
+			width: 50%;
+			overflow: hidden;			
+		}
+	}
+}
+
+mat-checkbox /deep/ .mat-checkbox-label {
+	white-space: pre-wrap;
+}
