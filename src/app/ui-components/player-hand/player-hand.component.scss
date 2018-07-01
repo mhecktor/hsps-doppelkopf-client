@@ -1,0 +1,10 @@
+.cards {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+:host {
+	background: green;
+	border: 1px solid black;
+}

@@ -1,0 +1,10 @@
+<mat-list>
+  <h3 mat-subheader>Spieler</h3>
+  <ng-container *ngFor="let player of players">
+    <mat-list-item>
+      <mat-icon mat-list-icon>android</mat-icon>
+      <h4 mat-line>{{player}}</h4>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </ng-container>
+</mat-list>

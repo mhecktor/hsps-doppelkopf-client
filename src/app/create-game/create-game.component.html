@@ -2,14 +2,11 @@
 <div class="container" mat-dialog-content>
   <form class="game-form" #gameForm="ngForm">
     <mat-form-field>
-      <input matInput name="gameName" placeholder="Name des Spiels" [(value)]="newGame.gameName">
+      <input matInput name="gameName" placeholder="Name des Spiels" [(ngModel)]="newGame.gameName">
     </mat-form-field>
     <mat-form-field>
-      <input matInput name="playerName" placeholder="Spielername" [(value)]="newGame.playerName">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput name="rounds" placeholder="Runden" type="number" [(value)]="newGame.rounds">
-    </mat-form-field>
+      <input matInput name="playerName" placeholder="Spielername" [(ngModel)]="newGame.playerName">
+    </mat-form-field>    
     <h4>Regeln</h4>
     <section class="rules">
       <mat-checkbox class="example-margin" name="armut" [(ngModel)]="newGame.rules.armut">Armut</mat-checkbox>

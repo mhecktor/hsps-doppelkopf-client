@@ -1,3 +1,11 @@
-<p>
-  game-list works!
-</p>
+<mat-list>
+  <h3 mat-subheader>Spiele</h3>
+  <ng-container *ngFor="let game of games">
+    <mat-list-item (click)="joinSession(game)">
+      <mat-icon mat-list-icon>accessible_forward</mat-icon>
+      <h4 mat-line>{{game.spielID}}</h4>
+      <p mat-line> {{game.anzahlSpieler}}/4</p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </ng-container>
+</mat-list>

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Spiel erstellen</h1>
+<div class="container" mat-dialog-content>
+  <form class="game-form" #gameForm="ngForm" ng-submit="onYesClick()">
+    <mat-form-field>
+      <input matInput name="playerName" placeholder="Spielername" [(ngModel)]="playerName">
+    </mat-form-field>    
+  </form>
+ <player-list [id]="gameId">
+ </player-list>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button (click)="onYesClick()" cdkFocusInitial>Beitreten</button>
+</div>

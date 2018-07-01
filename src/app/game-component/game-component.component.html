@@ -1,0 +1,33 @@
+<section *ngIf="!game?.gameState">
+  <player-list [id]="gameId">
+  </player-list>
+  <button class="start-button" color="primary" [disabled]="isGameNotFull()" mat-raised-button *ngIf="playerName === game?.spieler[0]"
+    (click)="startGame()">
+    Start
+  </button>
+  <section class="waitingForStart" *ngIf="playerName !== game?.spieler[0]">
+    <mat-spinner [diameter]="25"></mat-spinner>
+    Warte auf Spielbegin
+  </section>
+</section>
+<section *ngIf="game?.gameState">
+  <section class="table">
+    {{game.currentSpielerName}}
+    <section class="cards">
+    <card [card]="card" *ngFor="let card of game?.stich?.karten">
+    </card>
+  </section>
+  </section>
+  <player-hand class="player0" [atTurn]="game.currentSpielerName === playerName" [hand]="playerCards.get(playerName)" [name]="playerName">
+  </player-hand>
+  <!-- <ng-container *ngFor="let player of game?.spieler; let i = index">
+    <player-hand class="player{{(i + myOffset) % 4}}" [hand]="playerCards.get(player)" [name]="player">
+    </player-hand>
+  </ng-container> -->
+</section>
+
+<div *ngIf="game?.gameState === 'PostGame'" class="pyro">
+  <div class="before"></div>
+  <div class="after"></div>
+</div>
+{{game | json}}

@@ -1,0 +1,7 @@
+<!-- {{card | json}} -->
+
+<img *ngIf="card" src="assets/img/{{card?.farbwert | lowercase}}_{{card?.symbolik | lowercase}}.png" class="card-image" (click)="playCard()" />
+<img *ngIf="!card" src="assets/img/rueckseite.png" class="card-image"/>
+<!-- <div>
+  {{card.symbolik}}, {{card.farbwert}}, {{card.wertigkeit}}, {{card.trumpf}}
+</div> -->
