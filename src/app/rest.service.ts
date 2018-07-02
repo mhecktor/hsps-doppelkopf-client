@@ -62,7 +62,12 @@ export class RestService {
 	public performDecision(gameId: String, playerName: String, decision: boolean): Observable<any> {
 		return this.http.post(
 			`http://localhost:8080/players/${gameId}/${playerName}/performDecision`,
-			decision
+			decision,
+			{
+				headers: {
+					'content-type': 'application/json',
+				},
+			}
 		);
 	}
 

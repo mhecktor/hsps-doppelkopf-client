@@ -34,6 +34,7 @@ import {JoinGameDialogComponent} from './join-game-dialog/join-game-dialog.compo
 import {PlayerListComponent} from './ui-components/player-list/player-list.component';
 import {CardComponent} from './ui-components/card/card.component';
 import {PlayerHandComponent} from './ui-components/player-hand/player-hand.component';
+import { YesNoDialogComponent } from './ui-components/yes-no-dialog/yes-no-dialog.component';
 
 const appRoutes: Routes = [
 	{
@@ -75,6 +76,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 		PlayerListComponent,
 		PlayerHandComponent,
 		CardComponent,
+		YesNoDialogComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -99,7 +101,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 		MatSortModule,
 		MatDialogModule,
 	],
-	entryComponents: [CreateGameComponent, JoinGameDialogComponent],
+	entryComponents: [CreateGameComponent, JoinGameDialogComponent, YesNoDialogComponent],
 	providers: [RestService, MessagingService],
 	bootstrap: [AppComponent],
 })

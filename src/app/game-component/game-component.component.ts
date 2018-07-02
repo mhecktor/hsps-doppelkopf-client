@@ -8,7 +8,8 @@ import {Spiel} from '../model/spiel';
 import {MessagingService} from '../messaging.service';
 import {Card} from '../model/card';
 import {Hand} from '../model/hand';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { YesNoDialogComponent } from '../ui-components/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
 	selector: 'app-game-component',
@@ -31,7 +32,8 @@ export class GameComponent implements OnInit, OnDestroy {
 		private rest: RestService,
 		private router: Router,
 		private mqtt: MessagingService,
-		private sb: MatSnackBar
+		private sb: MatSnackBar,
+		private dialog: MatDialog
 	) {
 		this.route.params
 			.pipe(takeUntil(this.onUnsubscribe))
@@ -46,40 +48,38 @@ export class GameComponent implements OnInit, OnDestroy {
 						switch(result.data.type) {
 							case 'AskKoenigSolo' : {
 								console.log('AskKoenigSolo', result);
-								if (confirm('Möchten sie ein Königssolo spielen?')) {
-									this.rest.performDecision(this.gameId, this.playerName, true)
+								const dialogRef = this.dialog.open(YesNoDialogComponent, {
+									width: '250px',
+									data: 'Möchten sie ein Königssolo spielen?'
+								  });
+							  
+								  dialogRef.afterClosed().subscribe(result => {
+									this.rest.performDecision(this.gameId, this.playerName, result)
 									.pipe(takeUntil(this.onUnsubscribe))
 									.subscribe((result) => {
 										console.log(result);
 										this.loadSession();
 									});
-								} else {
-									this.rest.performDecision(this.gameId, this.playerName, false)
-									.pipe(takeUntil(this.onUnsubscribe))
-									.subscribe((result) => {
-										console.log(result);
-										this.loadSession();
-									});
-								}
+
+								  });								
 								break;
 							}
 							case 'AskSchmeissen' : {
 								console.log('AskSchmeissen', result);
-								if (confirm('Wollen sie schmeißen?')) {
-									this.rest.performDecision(this.gameId, this.playerName, true)
+								const dialogRef = this.dialog.open(YesNoDialogComponent, {
+									width: '250px',
+									data: 'Wollen sie schmeißen?'
+								  });
+							  
+								  dialogRef.afterClosed().subscribe(result => {
+									this.rest.performDecision(this.gameId, this.playerName, result)
 									.pipe(takeUntil(this.onUnsubscribe))
 									.subscribe((result) => {
 										console.log(result);
 										this.loadSession();
 									});
-								} else {
-									this.rest.performDecision(this.gameId, this.playerName, false)
-									.pipe(takeUntil(this.onUnsubscribe))
-									.subscribe((result) => {
-										console.log(result);
-										this.loadSession();
-									});
-								}
+
+								  });
 								break;
 							}
 							case 'GetCard' : {
@@ -96,13 +96,15 @@ export class GameComponent implements OnInit, OnDestroy {
 								break;
 							}
 							case 'ChooseCard': {
-								alert("Bitte waehlen sie eine Karte");
+								this.sb.open("Bitte wählen sie eine Karte!" ,'x', {
+									duration: 4000
+								});
 								break;
 							}
 							case 'ValidCard' : {
 								this.loadSession();
 								break;
-							}
+							}							
 							default : {
 								console.log(result);
 							}
@@ -137,7 +139,6 @@ export class GameComponent implements OnInit, OnDestroy {
 							this.router.navigate(['dashboard']);
 						}
 						this.game = session;
-						this.myOffset = this.game.spieler.indexOf(this.playerName);
 
 						if (session && session.gameState) {
 							this.loadPlayerCards(session);
@@ -159,14 +160,23 @@ export class GameComponent implements OnInit, OnDestroy {
 							.pipe(takeUntil(this.onUnsubscribe))
 							.subscribe((x) => {
 								console.log('generell', x);
-								if(x.data.type === 'EndedGame') {
-									if(x.data.data === this.playerName || x.data.data === null) {
-										
+								switch(x.data.type) {
+									case 'EndedGame' : {
+										break;
 									}
-								}
-								if(x.data.type === 'GameRunning') {
-									this.loadSession();
-								}
+									case 'RestartGame' : {
+										location.reload();
+										break;
+									}
+									case 'GameRunning' : {
+										this.loadSession();
+										break;
+									}
+									default : {
+										break;
+									}
+								}					
+								
 							});
 					});
 			});
