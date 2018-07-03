@@ -22,6 +22,7 @@ export class GameComponent implements OnInit, OnDestroy {
 	playerName: String;
 	gameId: String;
 	game: Spiel;
+	gameEnded: boolean = false;
 	cards: Card[] = [];
 	playerCards = new Map<String, Hand>();
 	tableCards: {player: String, card: Card}[] = [];
@@ -162,6 +163,7 @@ export class GameComponent implements OnInit, OnDestroy {
 								console.log('generell', x);
 								switch(x.data.type) {
 									case 'EndedGame' : {
+										this.gameEnded = true;
 										break;
 									}
 									case 'RestartGame' : {
