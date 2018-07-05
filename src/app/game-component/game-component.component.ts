@@ -10,6 +10,8 @@ import {Card} from '../model/card';
 import {Hand} from '../model/hand';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { YesNoDialogComponent } from '../ui-components/yes-no-dialog/yes-no-dialog.component';
+import { Statistik } from '../model/statistic';
+
 
 @Component({
 	selector: 'app-game-component',
@@ -27,6 +29,8 @@ export class GameComponent implements OnInit, OnDestroy {
 	playerCards = new Map<String, Hand>();
 	tableCards: {player: String, card: Card}[] = [];
 	myOffset: number = 0;
+	winner: boolean;
+	statistik: Statistik;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -35,7 +39,7 @@ export class GameComponent implements OnInit, OnDestroy {
 		private mqtt: MessagingService,
 		private sb: MatSnackBar,
 		private dialog: MatDialog
-	) {
+	) {		
 		this.route.params
 			.pipe(takeUntil(this.onUnsubscribe))
 			.subscribe((params) => {
@@ -83,6 +87,42 @@ export class GameComponent implements OnInit, OnDestroy {
 								  });
 								break;
 							}
+							case 'AskRe': {
+								const text = `${this.playerName} möchten sie Re ansagen?`
+								say(`${this.playerName} möchten sie ansagen`)
+								const dialogRef = this.dialog.open(YesNoDialogComponent, {
+									width: '250px',
+									data: text
+								  });
+							  
+								  dialogRef.afterClosed().subscribe(result => {
+									this.rest.performAnnouncement(this.gameId, this.playerName, result)
+									.pipe(takeUntil(this.onUnsubscribe))
+									.subscribe((result) => {
+										// this.loadSession();
+									});
+
+								  });
+								break;
+							}
+							case 'AskContra': {
+								const text = `${this.playerName} möchten sie Contra ansagen?`
+								say(`${this.playerName} möchten sie ansagen`)
+								const dialogRef = this.dialog.open(YesNoDialogComponent, {
+									width: '250px',
+									data: text
+								  });
+							  
+								  dialogRef.afterClosed().subscribe(result => {
+									this.rest.performAnnouncement(this.gameId, this.playerName, result)
+									.pipe(takeUntil(this.onUnsubscribe))
+									.subscribe((result) => {
+										// this.loadSession();
+									});
+
+								  });
+								break;
+							}
 							case 'GetCard' : {
 								this.cards.push(<Card>result.data.data);
 								if(this.playerCards.get(this.playerName)) {
@@ -97,15 +137,28 @@ export class GameComponent implements OnInit, OnDestroy {
 								break;
 							}
 							case 'ChooseCard': {
+								say(`Bitte wählen sie eine Karte ${this.playerName}!`);
 								this.sb.open("Bitte wählen sie eine Karte!" ,'x', {
-									duration: 4000
+									duration: 4000,
+									horizontalPosition: 'center',
+      								verticalPosition: 'top',
 								});
 								break;
 							}
 							case 'ValidCard' : {
 								this.loadSession();
 								break;
-							}							
+							}		
+							case 'LOSE': {
+								this.winner = false;
+								this.statistik = <Statistik> result.data.data
+								break;
+							}		
+							case 'WIN': {
+								this.winner = true;
+								this.statistik = <Statistik> result.data.data
+								break;
+							}			
 							default : {
 								console.log(result);
 							}
@@ -126,6 +179,7 @@ export class GameComponent implements OnInit, OnDestroy {
 					this.mqtt.subscribeToTopic(`/${this.gameId}/playerGotStich`)
 					.pipe(takeUntil(this.onUnsubscribe))
 					.subscribe((result) => {
+						say(`Stich ging an ${result.data.data}`)
 						this.sb.open("Stich ging an " + result.data.data,'x', {
 							duration: 1000
 						});
@@ -226,7 +280,32 @@ export class GameComponent implements OnInit, OnDestroy {
 			.pipe(takeUntil(this.onUnsubscribe))
 			.subscribe((session) => {
 				console.log(session);
-				this.game = session;
+				this.game = session;				
+				say("Starting game");
 			});
 	}
+}
+
+let voices: SpeechSynthesisVoice[] = [];
+window.speechSynthesis.onvoiceschanged = function() {
+    voices = window.speechSynthesis.getVoices();
+};
+
+export function say(text: string) {
+	var synth = window.speechSynthesis;
+	if (synth.speaking) {
+        console.error('speechSynthesis.speaking');
+        return;
+    }
+    if (text !== '') {
+	var utterThis = new SpeechSynthesisUtterance(text);
+	console.log(synth.getVoices());
+	voices.forEach((x) => {
+		if(x.name === 'Anna') {
+			utterThis.voice = x;
+		}
+	})
+	// https://github.com/mdn/web-speech-api/blob/master/speak-easy-synthesis/script.js   
+    synth.speak(utterThis);
+  }
 }

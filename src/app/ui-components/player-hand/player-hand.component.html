@@ -1,8 +1,14 @@
-<h4>
-  {{name}}<br>
-  <small>Refähig?: {{hand?.re ? 'Ja' : 'Nein'}}</small>
-</h4>
+
+<span class="fill-space"></span>
+<section class="stichs">
+  <div *ngFor="let stich of stichs; let i = index">
+    {{i+1}}<img *ngFor="let card of stich.karten" src="assets/img/{{card?.farbwert | lowercase}}_{{card?.symbolik | lowercase}}.png" class="stich-image" />
+  </div>
+</section>
 <section class="cards" *ngIf="hand">
   <card [card]="card" [atTurn]="atTurn" *ngFor="let card of hand.karten">    
   </card>
 </section>
+<h4>
+    {{name}}(<small>{{hand?.re ? 'Re' : 'Contra'}}</small>)
+</h4>

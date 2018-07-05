@@ -48,7 +48,7 @@ export class CardComponent implements OnInit {
 					}
 				);
 		} else {
-			alert('Sie sind nicht am Zug!');
+			say("Flossen weg, du bist nicht dran!")
 		}
 	}
 
@@ -56,4 +56,28 @@ export class CardComponent implements OnInit {
 		this.onUnsubscribe.next();
 		this.onUnsubscribe.complete();
 	}
+}
+let voices: SpeechSynthesisVoice[] = [];
+window.speechSynthesis.onvoiceschanged = function() {
+    voices = window.speechSynthesis.getVoices();
+};
+
+export function say(text: string) {
+	var synth = window.speechSynthesis;
+	if (synth.speaking) {
+        console.error('speechSynthesis.speaking');
+        return;
+    }
+    if (text !== '') {
+	var utterThis = new SpeechSynthesisUtterance(text);
+	console.log(synth.getVoices());
+	voices.forEach((x) => {
+		if(x.name === 'Anna') {
+			utterThis.voice = x;
+		}
+	})
+
+	// https://github.com/mdn/web-speech-api/blob/master/speak-easy-synthesis/script.js   
+    synth.speak(utterThis);
+  }
 }

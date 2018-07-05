@@ -4,7 +4,33 @@
 	justify-content: center;
 }
 
-:host {
-	background: green;
-	border: 1px solid black;
+h4 {
+	width: 100%;
+	text-align: center;
+}
+
+.fill-space {
+	flex: auto;
+	min-width: 10px;
+}
+
+.stichs {
+	display: flex;
+	flex-flow: row wrap;
+	width: 260px;
+	max-height: 200px;
+	margin-bottom: 10px;
+	justify-content: flex-start;
+	align-content: flex-start;
+	div {
+		height: 40px;
+		width: 130px;
+		font-size: 20px;
+		display: flex;
+		justify-content: flex-end;
+		.stich-image {
+			height: 40px;
+			vertical-align: middle;
+		}
+	}	
 }

@@ -35,6 +35,7 @@ import {PlayerListComponent} from './ui-components/player-list/player-list.compo
 import {CardComponent} from './ui-components/card/card.component';
 import {PlayerHandComponent} from './ui-components/player-hand/player-hand.component';
 import { YesNoDialogComponent } from './ui-components/yes-no-dialog/yes-no-dialog.component';
+import { AppConfiguration } from './app.configuration';
 
 const appRoutes: Routes = [
 	{
@@ -60,7 +61,7 @@ const appRoutes: Routes = [
 ];
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-	hostname: 'localhost',
+	hostname: AppConfiguration.HOSTNAME,
 	port: 9001,
 };
 
