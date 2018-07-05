@@ -87,8 +87,8 @@ export class GameComponent implements OnInit, OnDestroy {
 								  });
 								break;
 							}
-							case 'AskRe': {
-								const text = `${this.playerName} möchten sie Re ansagen?`
+							case 'AskReContraAnnouncement': {
+								const text = `${this.playerName} möchten sie ${result.data.data} ansagen?`
 								say(`${this.playerName} möchten sie ansagen`)
 								const dialogRef = this.dialog.open(YesNoDialogComponent, {
 									width: '250px',
@@ -101,25 +101,6 @@ export class GameComponent implements OnInit, OnDestroy {
 									.subscribe((result) => {
 										// this.loadSession();
 									});
-
-								  });
-								break;
-							}
-							case 'AskContra': {
-								const text = `${this.playerName} möchten sie Contra ansagen?`
-								say(`${this.playerName} möchten sie ansagen`)
-								const dialogRef = this.dialog.open(YesNoDialogComponent, {
-									width: '250px',
-									data: text
-								  });
-							  
-								  dialogRef.afterClosed().subscribe(result => {
-									this.rest.performAnnouncement(this.gameId, this.playerName, result)
-									.pipe(takeUntil(this.onUnsubscribe))
-									.subscribe((result) => {
-										// this.loadSession();
-									});
-
 								  });
 								break;
 							}
@@ -226,6 +207,16 @@ export class GameComponent implements OnInit, OnDestroy {
 									}
 									case 'GameRunning' : {
 										this.loadSession();
+										break;
+									}
+									case 'ReContraAnnouncement': {
+										const text = `${x.data.data}`
+										say(text)
+										this.sb.open(text ,'x', {
+											duration: 4000,
+											horizontalPosition: 'center',
+											  verticalPosition: 'top',
+										});
 										break;
 									}
 									default : {

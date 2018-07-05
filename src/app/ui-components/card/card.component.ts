@@ -76,7 +76,6 @@ export function say(text: string) {
 			utterThis.voice = x;
 		}
 	})
-
 	// https://github.com/mdn/web-speech-api/blob/master/speak-easy-synthesis/script.js   
     synth.speak(utterThis);
   }
