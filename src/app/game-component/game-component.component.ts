@@ -99,7 +99,7 @@ export class GameComponent implements OnInit, OnDestroy {
 									this.rest.performAnnouncement(this.gameId, this.playerName, result)
 									.pipe(takeUntil(this.onUnsubscribe))
 									.subscribe((result) => {
-										// this.loadSession();
+										this.loadSession();
 									});
 								  });
 								break;
@@ -209,7 +209,7 @@ export class GameComponent implements OnInit, OnDestroy {
 										this.loadSession();
 										break;
 									}
-									case 'ReContraAnnouncement': {
+									case 'Announcement': {
 										const text = `${x.data.data}`
 										say(text)
 										this.sb.open(text ,'x', {
