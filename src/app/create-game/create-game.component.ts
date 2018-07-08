@@ -47,7 +47,6 @@ export class CreateGameComponent implements OnInit, OnDestroy {
 			.subscribe((game: Spiel) => {
 				this.dialogRef.close();
 				this.router.navigate(['/game', game.spielID, this.newGame.playerName]);
-
 			});
 	}
 }

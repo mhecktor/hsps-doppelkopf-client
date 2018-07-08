@@ -230,14 +230,13 @@ export class GameComponent implements OnInit, OnDestroy {
 	}
 
 	private loadPlayerCards(session: Spiel) {
-		session.spieler.forEach((player) => {
-			this.rest
-				.getCards(this.game, player)
-				.pipe(takeUntil(this.onUnsubscribe))
-				.subscribe((res) => {
-					this.playerCards.set(player, res);
-				});
-		});
+		this.rest
+			.getCards(this.game, this.playerName)
+			.pipe(takeUntil(this.onUnsubscribe))
+			.subscribe((res) => {
+				this.playerCards.set(this.playerName, res);
+			});
+
 	}
 
 	ngOnInit() {}
@@ -283,6 +282,7 @@ window.speechSynthesis.onvoiceschanged = function() {
 };
 
 export function say(text: string) {
+	console.log(voices);
 	var synth = window.speechSynthesis;
 	if (synth.speaking) {
         console.error('speechSynthesis.speaking');
@@ -291,11 +291,11 @@ export function say(text: string) {
     if (text !== '') {
 	var utterThis = new SpeechSynthesisUtterance(text);
 	console.log(synth.getVoices());
-	voices.forEach((x) => {
+	synth.getVoices().forEach((x) => {
 		if(x.name === 'Anna') {
 			utterThis.voice = x;
 		}
-	})
+	});
 	// https://github.com/mdn/web-speech-api/blob/master/speak-easy-synthesis/script.js   
     synth.speak(utterThis);
   }
