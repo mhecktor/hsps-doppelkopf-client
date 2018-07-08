@@ -45,6 +45,7 @@ export class MessagingService implements OnDestroy {
 			.subscribe(log("onSuback"));
 	}
 
+	// Show in DEMO
 	subscribeToTopic(topic: string): Observable<Message> {
 		MqttService.filterMatchesTopic(topic, '/Wurst/playerJoined')
 		return this.mqtt

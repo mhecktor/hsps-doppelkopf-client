@@ -16,6 +16,7 @@ export class RestService {
 		return this.http.get<Spiel[]>(`http://${getHost()}:8080/sessions`);
 	}
 
+	// Show in DEMO
 	public createGame(newGame): Observable<Spiel> {
 		return this.http.post<Spiel>(
 			`http://${getHost()}:8080/sessions`,

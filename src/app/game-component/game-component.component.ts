@@ -46,6 +46,7 @@ export class GameComponent implements OnInit, OnDestroy {
 				this.gameId = params.id;
 				this.playerName = params.playerName;
 
+				// Show in DEMO
 				this.mqtt
 					.subscribeToTopic(`/${this.gameId}/${this.playerName}`)
 					.pipe(takeUntil(this.onUnsubscribe))
@@ -229,6 +230,7 @@ export class GameComponent implements OnInit, OnDestroy {
 			});
 	}
 
+	// Show in DEMO
 	private loadPlayerCards(session: Spiel) {
 		this.rest
 			.getCards(this.game, this.playerName)
